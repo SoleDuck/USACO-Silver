@@ -1,0 +1,58 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+struct moun {
+
+    int start, end;
+
+};
+
+bool cmp(moun a, moun b) {
+
+    if(a.start == b.start) {
+
+        return a.end > b.end;
+
+    }
+
+    return a.start < b.start;
+
+}
+
+int main() {
+
+    freopen("mountains.in", "r", stdin);
+    freopen("mountains.out", "w", stdout);
+
+	int n;
+    cin >> n;
+
+    vector<moun> mountains(n);
+    for(int i = 0; i < n; i++) {
+
+        int original, increment;
+        cin >> original >> increment;
+        mountains[i].start = original - increment;
+        mountains[i].end = original + increment;
+
+    }
+
+    sort(mountains.begin(), mountains.end(), cmp);
+
+    int greatest = -1;
+    int ans = 0;
+
+    for(int i = 0; i < n; i++) {
+
+        if(mountains[i].end > greatest) {
+
+            ans++;
+            greatest = mountains[i].end;
+
+        }
+
+    }
+
+    cout << ans;
+
+}
