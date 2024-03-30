@@ -1,0 +1,49 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+
+int main() {
+
+	freopen("div7.in", "r", stdin);
+	freopen("div7.out", "w", stdout);
+
+	ll n;
+	cin >> n;
+
+	ll numbers[n + 1];
+	for(int i = 1; i < n + 1; i++) {
+
+		ll num;
+		cin >> num;
+		numbers[i] = numbers[i - 1] + num;
+
+	}
+
+	bool found = false;
+
+	for(int j = n; j > 1 && found == false; j--) {
+
+		for(int i = 1; i + j - 1 <= n && found == false; i++) {
+
+			ll lower = numbers[i - 1];
+
+			ll higher = numbers[i + j - 1];
+
+			if((higher - lower) % 7 == 0) {
+
+				found = true;
+				cout << j;
+
+			}
+
+		}
+
+	}
+
+	if(found == false) {
+
+		cout << 0;
+
+	}
+
+}
