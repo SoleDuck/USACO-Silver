@@ -1,0 +1,64 @@
+#include <bits/stdc++.h>;
+using namespace std;
+
+//hps
+
+int main() {
+
+	freopen("hps.in", "r", stdin);
+	freopen("hps.out", "w", stdout);
+
+	map<char, int> convert;
+	convert['H'] = 1;
+	convert['P'] = 2;
+	convert['S'] = 0;
+
+	int n;
+	cin >> n;
+	
+	vector<vector<int>> numbers(n + 1, vector<int> (3));
+
+	for(int i = 1; i <= n; i++) {
+
+		char input;
+		cin >> input;
+
+		numbers[i] = numbers[i - 1];
+		numbers[i][convert[input]]++;
+
+	}
+
+	int max = 0;
+	for(int i = 0; i <= 2; i++) {
+
+		for(int j = 0; j <= 2; j++) {
+
+			for(int a = 1; a <= n; a++) {
+
+				int sum = 0;
+
+				if(i == j) {
+
+					sum = numbers[n][i];
+
+				} else {
+
+					sum += numbers[a][i] + numbers[n][j] - numbers[a][j];
+
+				}
+
+				if(sum > max) {
+
+					max = sum;
+
+				}
+
+			}
+
+		}
+
+	}
+
+	cout << max;
+
+}
