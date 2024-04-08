@@ -1,0 +1,39 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+
+int main() {
+
+	freopen("maxcross.in", "r", stdin);
+	freopen("maxcross.out", "w", stdout);
+
+	int n, k, b;
+	cin >> n >> k >> b;
+
+	map<int, int> damaged;
+	for(int i = 0; i < b; i++) {
+
+		int input;
+		cin >> input;
+		damaged[input]++;
+
+	}
+
+	vector<int> prefix(n + 1);
+	for(int i = 1; i <= n; i++) {
+
+		prefix[i] = prefix[i - 1] + damaged[i];
+
+	}
+
+	int max = INT_MAX;
+	for(int i = 0; i <= n - k; i++) {
+
+		int cur = prefix[i + k] - prefix[i];
+		max = min(max, cur);
+
+	}
+
+	cout << max;
+
+}
