@@ -1,0 +1,102 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+
+struct Cow{
+
+	int x, y, id;
+	Cow(int xVal, int yVal, int i) {
+
+		x = xVal;
+		y = yVal;
+		id = i;
+
+	}
+
+};
+
+bool northSort(Cow a, Cow b) {
+
+	if(a.x == b.x) {
+
+		return a.y < b.y;
+
+	}
+
+	return a.x < b.x;
+
+}
+
+bool eastSort(Cow a, Cow b) {
+
+	if(a.y == b.y) {
+
+		return a.x < b.x;
+
+	}
+
+	return a.y < b.y;
+
+}
+
+bool stopped[1001];
+int blame[1001];
+
+int main() {
+
+	int n;
+	cin >> n;
+	vector<Cow> north, east;
+	for(int i = 0; i < n; i++) {
+
+		char insert;
+		int a, b;
+		cin >> insert >> a >> b;
+		if(insert == 'N') {
+
+			north.push_back(Cow(a, b, i));
+
+		} else {
+
+			east.push_back(Cow(a, b, i));
+
+		}
+
+	}
+
+	sort(north.begin(), north.end(), northSort);
+	sort(east.begin(), east.end(), eastSort);
+	
+	for(Cow i : east) {
+
+		for(Cow j : north) {
+
+			if(stopped[i.id] == false && stopped[j.id] == false && i.x <= j.x && i.y >= j.y) {
+
+				int xDistance = j.x - i.x;
+				int yDistance = i.y - j.y;
+				if(xDistance < yDistance) {
+
+					stopped[j.id] = true;
+					blame[i.id] += blame[j.id] + 1;
+
+				} else if(yDistance < xDistance) {
+
+					stopped[i.id] = true;
+					blame[j.id] += blame[i.id] + 1;
+
+				}
+
+			}
+
+		}
+
+	}
+
+	for(int i = 0; i < n; i++) {
+
+		cout << blame[i] << endl;
+
+	}
+
+}
