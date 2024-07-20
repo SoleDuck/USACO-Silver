@@ -1,0 +1,50 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+
+bool cmp(pair<ll, ll> a, pair<ll, ll> b) {
+
+	if(a.second == b.second) {
+
+		return a.first < b.first;
+
+	}
+
+	return a.second > b.second;
+
+}
+
+int main() {
+
+	freopen("reststops.in", "r", stdin);
+	freopen("reststops.out", "w", stdout);
+
+	ll length, n, john, bessie;
+	cin >> length >> n >> john >> bessie;
+	vector<pair<ll, ll>> stops(n);
+
+	for(ll i = 0; i < n; i++) {
+
+		cin >> stops[i].first >> stops[i].second;
+
+	}
+
+	sort(stops.begin(), stops.end(), cmp);
+
+	ll curLoc = 0;
+	ll ans = 0;
+	for(ll i = 0; i < stops.size(); i++) {
+
+		if(curLoc < stops[i].first) {
+
+			ll dist = stops[i].first - curLoc;
+			ans += ((john * dist) - (bessie * dist)) * stops[i].second;
+			curLoc = stops[i].first;
+
+		}
+
+	}
+
+	cout << ans << endl;
+
+}
