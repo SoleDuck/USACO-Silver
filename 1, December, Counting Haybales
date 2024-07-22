@@ -1,0 +1,29 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+
+int main() {
+
+	freopen("haybales.in", "r", stdin);
+	freopen("haybales.out", "w", stdout);
+
+	int n, k;
+	cin >> n >> k;
+
+	vector<int> bales(n);
+	for(int i = 0; i < n; i++) {
+
+		cin >> bales[i];
+
+	}
+	sort(bales.begin(), bales.end());
+
+	for(int i = 0; i < k; i++) {
+
+		int left, right;
+		cin >> left >> right;
+		cout << upper_bound(bales.begin(), bales.end(), right) - lower_bound(bales.begin(), bales.end(), left) << endl;
+
+	}
+
+}
