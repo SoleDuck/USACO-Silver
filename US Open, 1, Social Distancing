@@ -1,0 +1,62 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+
+int main() {
+
+	freopen("socdist.in", "r", stdin);
+	freopen("socdist.out", "w", stdout);
+	
+	ll n, m;
+	cin >> n >> m;
+
+	vector<pair<ll, ll>> patches(m);
+	for(ll i = 0; i < m; i++) {
+
+		cin >> patches[i].first >> patches[i].second;
+
+	}
+	sort(patches.begin(), patches.end());
+
+	ll left = 0, right = patches[m - 1].second - patches[0].first + 1;
+
+	while(left < right) {
+
+		ll mid = left + (right - left + 1) / 2;
+		ll amt = 1;
+		ll interval = 0;
+		ll cur = patches[0].first;
+
+		while(cur + mid <= patches[m - 1].second) {
+
+			while(cur + mid > patches[interval].second) {
+
+				interval++;
+
+			}
+
+			cur = max(cur + mid, patches[interval].first);
+			amt++;
+			if(amt == n) {
+
+				break;
+
+			}
+
+		}
+
+		if(amt == n) {
+
+			left = mid;
+
+		} else {
+
+			right = mid - 1;
+
+		}
+
+	}
+
+	cout << left << endl;
+
+}
