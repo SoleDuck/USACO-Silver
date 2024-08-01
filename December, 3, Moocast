@@ -1,0 +1,84 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+
+struct cow{
+
+	int x, y, power;
+
+};
+
+int n;
+vector<bool> visited(200);
+vector<vector<int>> graph;
+
+int dfs(int node) {
+
+	int amt = 1;
+
+	visited[node] = true;
+	for(int i : graph[node]) {
+
+		if(visited[i] == false) {
+
+			visited[i] = true;
+			amt += dfs(i);
+
+		}
+
+	}
+
+	return amt;
+
+}
+
+int main() {
+
+	freopen("moocast.in", "r", stdin);
+	freopen("moocast.out", "w", stdout);
+
+	int n;
+	cin >> n;
+	graph.resize(n);
+	vector<cow> Cows;
+
+	for(int i = 0; i < n; i++) {
+
+		cow insert;
+		cin >> insert.x >> insert.y >> insert.power;
+		for(int j = 0; j < Cows.size(); j++) {
+
+			int distance = 0;
+			distance += pow((insert.x - Cows[j].x), 2);
+			distance += pow((insert.y - Cows[j].y), 2);
+
+			if(distance <= pow(insert.power, 2)) {
+
+				graph[i].push_back(j);
+
+			}
+
+			if(distance <= pow(Cows[j].power, 2)) {
+
+				graph[j].push_back(i);
+
+			}
+
+		}
+
+		Cows.push_back(insert);
+
+	}
+
+	int ans = 0;
+
+	for(int i = 0; i < n; i++) {
+
+		fill(visited.begin(), visited.end(), false);
+		ans = max(ans, dfs(i));
+
+	}
+
+	cout << ans << endl;
+ 
+}
