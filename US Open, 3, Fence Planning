@@ -1,0 +1,88 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+
+int n, m;
+vector<vector<int>> graph;
+vector<pair<int, int>> cows;
+vector<bool> visited;
+int min_x = INT_MAX, min_y = INT_MAX, max_x = 0, max_y = 0;
+int steps = 0;
+
+void dfs(int node) {
+
+	if(visited[node] == true) {
+
+		return;
+
+	}
+	visited[node] = true;
+	min_x = min(min_x, cows[node].first);
+	max_x = max(max_x, cows[node].first);
+	min_y = min(min_y, cows[node].second);
+	max_y = max(max_y, cows[node].second);
+	steps++;
+
+	for(int i : graph[node]) {
+
+		if(visited[i] == false) {
+
+			dfs(i);
+
+		}
+
+	}
+
+}
+
+int main() {
+
+	freopen("fenceplan.in", "r", stdin);
+	freopen("fenceplan.out", "w", stdout);
+
+	int n, m;
+	cin >> n >> m;
+	graph.resize(n + 1);
+	cows.resize(n + 1);
+	visited.resize(n + 1);
+
+	for(int i = 0; i < n; i++) {
+
+		cin >> cows[i].first >> cows[i].second;	
+
+	}
+
+	for(int i = 0; i < m; i++) {
+
+		int a, b;
+		cin >> a >> b;
+		a--, b--;
+
+		graph[a].push_back(b);
+		graph[b].push_back(a);
+
+	}
+
+	int ans = INT_MAX;
+
+	for(int i = 0; i < n; i++) {
+
+		dfs(i);
+
+		if(steps != 0) {
+
+			ans = min(ans, 2 * (max_x - min_x + max_y - min_y));
+			//cout << min_x << " " << max_x << " " << min_y << " " << max_y << endl;
+			max_x = 0;
+			min_x = INT_MAX;
+			max_y = 0;
+			min_y = INT_MAX;
+		}
+
+		steps = 0;
+
+	}
+
+	cout << ans << endl;
+
+}
