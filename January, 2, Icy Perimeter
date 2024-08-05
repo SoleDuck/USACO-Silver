@@ -1,0 +1,100 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+
+int n;
+vector<vector<char>> grid;
+vector<vector<bool>> visited;
+int perimeter = 0, area = 0;
+
+void floodfill(int x, int y, char color) {
+
+	if(x >= n || y >= n || x < 0 || y < 0) {
+
+		perimeter++;
+		return;
+
+	}
+	if(visited[x][y] == true) {
+
+		return;
+
+	}
+	if(grid[x][y] == '.') {
+
+		perimeter++;
+		return;
+
+	} else {
+
+		area++;
+
+	}
+
+	visited[x][y] = true;
+	floodfill(x, y + 1, color);
+	floodfill(x, y - 1, color);
+	floodfill(x + 1, y, color);
+	floodfill(x - 1, y, color);
+
+}
+
+bool cmp(pair<int, int> a, pair<int, int> b) {
+
+	if(a.first == b.first) {
+
+		return a.second > b.second;
+
+	}
+
+	return a.first < b.first;
+
+}
+
+int main() {
+
+	freopen("perimeter.in", "r", stdin);
+	freopen("perimeter.out", "w", stdout);
+
+	cin >> n;
+	grid.resize(n);
+	visited.resize(n);
+
+	for(int i = 0; i < n; i++) {
+
+		for(int j = 0; j < n; j++) {
+
+			char insert;
+			cin >> insert;
+
+			grid[i].push_back(insert);
+			visited[i].push_back(false);
+
+		}
+
+	}
+
+	vector<pair<int, int>> blobs;
+
+	for(int i = 0; i < n; i++) {
+
+		for(int j = 0; j < n; j++) {
+
+			if(visited[i][j] == false && grid[i][j] == '#') {
+
+				perimeter = 0;
+				area = 0;
+				floodfill(i, j, '#');
+
+				blobs.push_back(make_pair(area, perimeter));
+
+			}
+
+		}
+
+	}
+
+	sort(blobs.begin(), blobs.end(). cmp);
+	cout << blobs[blobs.size() - 1].first << " " << blobs[blobs.size() - 1].second << endl;
+
+}
