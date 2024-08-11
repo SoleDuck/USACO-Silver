@@ -1,0 +1,85 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+
+int n;
+string types;
+vector<vector<int>> graph;
+int num = 0;
+vector<int> groups;
+
+void dfs(int node) {
+
+	if(groups[node] != 0) {
+
+		return;
+
+	}
+	groups[node] = num;
+
+	for(int i : graph[node]) {
+
+		if(types[i] == types[node]) {
+
+			dfs(i);
+
+		} 
+
+	}
+
+}
+
+int main() {
+
+	freopen("milkvisits.in", "r", stdin);
+	freopen("milkvisits.out", "w", stdout);
+
+	int m;
+
+	cin >> n >> m;
+	graph.resize(n);
+	groups.resize(n);
+	cin >> types;
+
+	for(int i = 0; i < n - 1; i++) {
+
+		int a, b;
+		cin >> a >> b;
+		a--, b--;
+
+		graph[a].push_back(b);
+		graph[b].push_back(a);
+
+	}
+
+	for(int i = 0; i < n; i++) {
+
+		if(groups[i] == 0) {
+
+			num++;
+			dfs(i);
+
+		}
+
+	}
+
+	for(int i = 0; i < m; i++) {
+
+		int a, b;
+		char type;
+		cin >> a >> b >> type;
+		a--, b--;
+
+		if(types[a] == type || types[b] == type || groups[a] != groups[b]) {
+
+			cout << 1;
+
+		} else {
+
+			cout << 0;
+
+		}
+
+	}
+
+}
