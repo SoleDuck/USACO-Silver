@@ -1,0 +1,68 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+
+int n, q;
+vector<vector<pair<int, int>>> tree;
+vector<bool> visited;
+int border;
+int ans = 0;
+
+void dfs(int node) {
+
+	if(visited[node] == true) {
+
+		return;
+
+	}
+
+	visited[node] = true;
+	for(pair<int, int> i : tree[node]) {
+
+		if(visited[i.first] == false && i.second >= border) {
+
+			ans++;
+			dfs(i.first);
+
+		}
+
+	}
+
+}
+
+int main() {
+
+	freopen("mootube.in", "r", stdin);
+	freopen("mootube.out", "w", stdout);
+
+	cin >> n >> q;
+	tree.resize(n);
+	visited.resize(n);
+
+	for(int i = 0; i < n - 1; i++) {
+
+		int a, b, relevance;
+		cin >> a >> b >> relevance;
+
+		a--;
+		b--;
+		tree[a].push_back(make_pair(b, relevance));
+		tree[b].push_back(make_pair(a, relevance));
+
+	}
+
+	for(int i = 0; i < q; i++) {
+
+		int video;
+		cin >> border >> video;
+		video--;
+
+		dfs(video);
+		fill(visited.begin(), visited.end(), false);
+
+		cout << ans << endl;
+		ans = 0;
+
+	}
+
+}
