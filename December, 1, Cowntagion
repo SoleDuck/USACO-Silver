@@ -1,0 +1,58 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+
+int n;
+vector<vector<int>> graph;
+
+int dfs(int node, int root) {
+
+	int ans = 0;
+	int children = graph[node].size();
+
+	if(root == -1) {
+
+		children++;
+
+	}
+
+	int curCows = 1;
+	while(curCows < children) {
+
+		ans++;
+		curCows *= 2;
+
+	}
+
+	for(int i : graph[node]) {
+
+		if(i != root) {
+
+			ans += dfs(i, node) + 1;
+
+		}
+
+	}
+	return ans;
+
+}
+
+int main() {
+
+	cin >> n;
+	graph.resize(n);
+	
+	for(int i = 0; i < n - 1; i++) {
+
+		int a, b;
+		cin >> a >> b;
+		a--, b--;
+
+		graph[a].push_back(b);
+		graph[b].push_back(a);
+		
+	}
+
+	cout << dfs(0, -1) << endl;
+
+}
