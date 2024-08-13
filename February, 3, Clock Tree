@@ -1,0 +1,83 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+
+int n;
+vector<int> amt;
+vector<vector<int>> graph;
+int sum1, sum2, nodes1, nodes2;
+
+void dfs(int node, int parent, int color) {
+
+	if(color == 0) {
+
+		sum1 += amt[node];
+		nodes1++;
+
+	} else {
+
+		sum2 += amt[node];
+		nodes2++;
+
+	}
+
+	for(int i : graph[node]) {
+
+		if(i == parent) {
+
+			continue;
+
+		}
+		dfs(i, node, 1 - color);
+
+	}
+
+}
+
+int main() {
+
+	freopen("clocktree.in", "r", stdin);
+	freopen("clocktree.out", "w", stdout);
+
+	cin >> n;
+	graph.resize(n);
+
+	for(int i = 0; i < n; i++) {
+
+		int insert;
+		cin >> insert;
+		amt.push_back(insert);
+
+	}
+
+	for(int i = 0; i < n - 1; i++) {
+
+		int a, b;
+		cin >> a >> b;
+		a--, b--;
+
+		graph[a].push_back(b);
+		graph[b].push_back(a);
+
+	}
+
+	dfs(0, -1, 0);
+	if(sum1 % 12 == sum2 % 12) {
+
+		cout << n << endl;
+
+	} else if((sum1 + 1) % 12 == sum2 % 12) {
+
+		cout << nodes2 << endl;
+
+	} else if(sum1 % 12 == (sum2 + 1) % 12) {
+
+		cout << nodes1 << endl;
+
+	} else {
+
+		cout << 0 << endl;
+
+	}
+
+}
