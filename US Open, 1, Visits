@@ -1,0 +1,84 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;;
+
+int n;
+vector<int> graph, v;
+vector<vector<int>> rev_Graph;
+vector<bool> visited;
+
+void fill_graph(int node) {
+
+	if(visited[node] == true) {
+
+		return;
+
+	}
+	visited[node] = true;
+
+	for(int i : rev_Graph[node]) {
+
+		fill_graph(i);
+
+	}
+
+}
+
+int smallest_Floyd(int node) {
+
+	int a = graph[node], b = graph[graph[node]];
+	while(a != b) {
+
+		a = graph[a];
+		b = graph[graph[b]];
+
+	}
+
+	int smallest = v[a];
+	a = graph[a];
+
+	while(a != b) {
+
+		smallest = min(smallest, v[a]);
+		a = graph[a];
+
+	}
+
+	fill_graph(a);
+	return smallest;
+
+}
+
+int main() {
+
+	cin >> n;
+	graph.resize(n);
+	rev_Graph.resize(n);
+	v.resize(n);
+	visited.resize(n);
+
+	ll ans = 0;
+
+	for(int i = 0; i < n; i++) {
+
+		cin >> graph[i] >> v[i];
+		graph[i]--;
+
+		rev_Graph[graph[i]].push_back(i);
+		ans += v[i];
+
+	}
+
+	for(int i = 0; i < n; i++) {
+
+		if(visited[i] == false) {
+
+			ans -= smallest_Floyd(i);
+
+		}
+
+	}
+
+	cout << ans << endl;
+
+}
