@@ -1,0 +1,56 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+
+int main() {
+
+	int c, n;
+	cin >> c >> n;
+	vector<int> teams(n), inverse(1 << c, -1);
+	queue<int> bfs;
+
+	for(int i = 0; i < n; i++) {
+
+		string insert;
+		cin >> insert;
+		int x = 0, y = 0;
+
+		for(int j = 0; j < c; j++) {
+
+			x = x * 2 + (insert[j] == 'G');
+			y = y * 2 + (insert[j] == 'H');
+
+		}
+
+		teams[i] = x;
+		inverse[y] = 0;
+		bfs.push(y);
+
+	}
+
+	while(bfs.size() > 0) {
+
+		int search = bfs.front();
+		bfs.pop();
+
+		for(int i = 0; i < c; i++) {
+
+			int x = search ^ (1 << i);
+			if(inverse[x] == -1) {
+
+				bfs.push(x);
+				inverse[x] = inverse[search] + 1;
+				
+			}
+
+		}		
+
+	}
+
+	for(int i = 0; i < n; i++) {
+
+		cout << c - inverse[teams[i]] << endl;
+
+	}
+
+}
